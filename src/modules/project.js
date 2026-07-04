@@ -1,5 +1,9 @@
-export function createProject(name) {
-    const todos = [];
+import {todoToPlain} from "./todo.js";
+import {todoFromPlain} from "./todo.js";
+
+export function createProject(name, existingId, existingTodos) {
+    const id = existingId ?? crypto.randomUUID();
+    const todos = existingTodos ?? [];
 
     function addTodo(todo) {
         todos.push(todo);
@@ -14,5 +18,18 @@ export function createProject(name) {
         return todos;
     }
 
-    return { name, addTodo, removeTodo, getTodos };
+    return { id, name, addTodo, removeTodo, getTodos };
+}
+
+export function projectToPlain(project) {
+    return {
+        id: project.id,
+        name: project.name,
+        todos: project.getTodos().map(todoToPlain),
+    }
+}
+
+export function projectFromPlain(plainProject) {
+    const realTodos = plainProject.todos.map(todoFromPlain);
+    return createProject(plainProject.name, plainProject.id, realTodos);
 }
