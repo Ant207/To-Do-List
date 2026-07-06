@@ -8,19 +8,20 @@ export function createProject(name, existingId, existingTodos) {
     function addTodo(todo) {
         todos.push(todo);
     }
-
     function removeTodo(id) {
         const index = todos.findIndex(t => t.id === id);
         if (index !== -1) todos.splice(index, 1);
     }
-
     function getTodos() {
         return todos;
     }
-
-    return { id, name, addTodo, removeTodo, getTodos };
+    return {
+        id,
+        name,
+        addTodo,
+        removeTodo,
+        getTodos};
 }
-
 export function projectToPlain(project) {
     return {
         id: project.id,
@@ -28,7 +29,6 @@ export function projectToPlain(project) {
         todos: project.getTodos().map(todoToPlain),
     }
 }
-
 export function projectFromPlain(plainProject) {
     const realTodos = plainProject.todos.map(todoFromPlain);
     return createProject(plainProject.name, plainProject.id, realTodos);
